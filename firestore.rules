@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAuthorizedAdmin() {
+      return isSignedIn() &&
+        request.auth.token.email_verified == true &&
+        request.auth.token.email == 'liem6591@gmail.com';
+    }
+
+    // Connection health check document
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Admin collection - accessible only by the verified authorized admin
+    match /admins/{adminId} {
+      allow read, write: if isAuthorizedAdmin() && adminId == request.auth.uid;
+    }
+  }
+}

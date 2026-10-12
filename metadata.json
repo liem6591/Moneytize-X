@@ -1,0 +1,6 @@
+{
+  "name": "INVESTigate Pro",
+  "description": "The Financial Platforms Database. Compare 4,500+ verified stock brokers, e-wallets, high-yield savings, crypto exchanges, and fintech apps.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

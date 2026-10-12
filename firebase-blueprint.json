@@ -1,0 +1,37 @@
+{
+  "entities": {
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Represents an authorized administrator of INVESTigate Pro",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Primary email address of the administrator"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role identifier, strictly 'admin'",
+          "enum": ["admin"]
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "description": "ISO timestamp of the most recent authentication"
+        },
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user identifier",
+          "maxLength": 128
+        }
+      },
+      "required": ["email", "role", "uid"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": "AdminUser",
+      "description": "Stores authorized administrator registry documents"
+    }
+  }
+}

@@ -1,0 +1,902 @@
+import { FinancialPlatform } from '../types';
+
+export const FINANCIAL_CATEGORIES = [
+  'Stock Trading',
+  'Crypto Exchanges',
+  'High-Yield Savings',
+  'E-Wallets & Pay',
+  'Robo-Advisors',
+  'Budgeting & Cashflow',
+  'Consumer Lending',
+  'Credit Cards',
+  'Business Banking',
+  'Real Estate Investing',
+  'DeFi & Staking',
+  'Market Analysis',
+  'Wealth Management',
+  'Tax & Accounting',
+  'Payment Gateways',
+  'Self-Custody & Wallets',
+  'Forex & Commodities',
+  'Retirement & 401(k)',
+] as const;
+
+export const INITIAL_FINANCIAL_PLATFORMS: FinancialPlatform[] = [
+  {
+    id: 'robinhood',
+    name: 'Robinhood',
+    description: 'Pioneer of commission-free US stock, options, and crypto trading with 5.0% APY cash sweep.',
+    fullDescription: 'Robinhood revolutionized retail investing by removing brokerage commissions on US stocks, ETFs, and options. It features an intuitive mobile interface, 24-hour market trading on select equities, and a high-yield cash sweep paying 5.0% APY with up to $2.25M in partner FDIC insurance for Gold members.',
+    category: 'Stock Trading',
+    secondaryCategory: 'High-Yield Savings',
+    feeTier: 'Commission Free',
+    feeHighlight: '$0 / trade',
+    yieldAPY: '5.00% APY',
+    minDeposit: '$0',
+    regulatoryStatus: 'SEC & FINRA Member',
+    depositInsurance: 'SIPC up to $500k; FDIC up to $2.25M',
+    currentOffer: 'Up to $200 in free stock upon deposit + 3% IRA match',
+    isEditorPick: true,
+    upvotes: 342,
+    rating: 4.8,
+    reviewCount: 4210,
+    url: 'https://robinhood.com',
+    affiliateUrl: 'https://robinhood.com',
+    dateAdded: '2026-09-14',
+    logo: {
+      type: 'custom',
+      text: '🪶',
+      bg: '#00C805',
+      color: '#FFFFFF',
+      border: '#00B004',
+    },
+    keyPerks: ['$0 stock & options commission', '5.0% APY uninvested cash sweep', '3% IRA retirement contribution match', '24/5 overnight equities trading'],
+    pros: [
+      'True zero-commission on US equities and options contracts',
+      'Industry-leading 3% retirement IRA match for Gold members',
+      'Clean, distraction-free mobile and web application layout',
+      'Automated recurring investment without additional fees'
+    ],
+    cons: [
+      'Robinhood Gold subscription costs $5/mo to unlock highest APY',
+      'Advanced technical charting is less deep than thinkorswim or IBKR'
+    ],
+    feeBreakdown: [
+      { label: 'US Stocks & ETFs', value: '$0.00', notes: 'Zero commission' },
+      { label: 'Options Contracts', value: '$0.00', notes: 'No per-contract fee' },
+      { label: 'Gold Membership', value: '$5.00 / mo', notes: 'Unlocks 5.0% APY & Level 2 data' },
+      { label: 'Account Maintenance', value: '$0.00', notes: 'No inactivity fees' }
+    ],
+    tags: ['Zero Fee', 'Stocks', 'Options', 'IRA Match', 'High APY']
+  },
+  {
+    id: 'interactive-brokers',
+    name: 'Interactive Brokers (IBKR)',
+    description: 'Institutional-grade global trading access across 150+ markets with industry-lowest margin rates.',
+    fullDescription: 'Interactive Brokers is the premier choice for serious traders and institutional investors. Offering direct market access to stocks, options, futures, currencies, and bonds across 33 countries in 27 currencies, IBKR provides unmatched execution quality and benchmark-beating margin financing rates.',
+    category: 'Stock Trading',
+    secondaryCategory: 'Forex & Commodities',
+    feeTier: 'Low Fee',
+    feeHighlight: '$0.005 / share (Pro)',
+    yieldAPY: '4.83% APY',
+    minDeposit: '$0',
+    regulatoryStatus: 'SEC, FINRA, CFTC, FCA',
+    depositInsurance: 'SIPC up to $500k; excess SIPC up to $30M',
+    currentOffer: 'Earn up to $1,000 in IBKR stock with new deposits',
+    isEditorPick: true,
+    upvotes: 289,
+    rating: 4.9,
+    reviewCount: 3890,
+    url: 'https://interactivebrokers.com',
+    affiliateUrl: 'https://interactivebrokers.com',
+    dateAdded: '2026-09-13',
+    logo: {
+      type: 'text',
+      text: 'IB',
+      bg: '#CC0000',
+      color: '#FFFFFF',
+      border: '#B30000',
+    },
+    keyPerks: ['Access to 150+ markets in 33 countries', 'Industry-lowest margin rates (from 5.8%)', 'Earn 4.83% on uninvested cash', 'Trader Workstation (TWS) desktop suite'],
+    pros: [
+      'Unmatched global breadth and multi-currency cash settlement',
+      'Superior smart routing algorithms minimizing slippage',
+      'IBKR Lite tier offers zero-commission US stock trading',
+      'Full suite of bonds, global derivatives, and algorithmic APIs'
+    ],
+    cons: [
+      'Trader Workstation software has a steep learning curve',
+      'Customer support is primarily ticket and chat based'
+    ],
+    feeBreakdown: [
+      { label: 'IBKR Lite US Stocks', value: '$0.00', notes: 'Zero commission' },
+      { label: 'IBKR Pro Equities', value: '$0.005 / share', notes: 'Volume tiered discounts' },
+      { label: 'Options Base', value: '$0.65 / contract', notes: 'Scales down with high volume' },
+      { label: 'Margin Interest', value: '5.83% - 6.83%', notes: 'Lowest among major brokers' }
+    ],
+    tags: ['Global Markets', 'Low Margin', 'Pro Tools', 'Bonds', 'Forex']
+  },
+  {
+    id: 'coinbase',
+    name: 'Coinbase',
+    description: 'Premier US-regulated cryptocurrency platform with institutional cold storage security.',
+    fullDescription: 'Coinbase (NASDAQ: COIN) is the most trusted cryptocurrency platform in North America. Serving over 100 million verified users, Coinbase provides secure spot trading, USDC staking rewards, advanced limit-order trading tools, and self-custody Coinbase Wallet integration.',
+    category: 'Crypto Exchanges',
+    secondaryCategory: 'Self-Custody & Wallets',
+    feeTier: 'Freemium',
+    feeHighlight: '0.05% - 0.60% (Advanced)',
+    yieldAPY: '5.20% USDC APY',
+    minDeposit: '$2',
+    regulatoryStatus: 'NYDFS BitLicense, FinCEN Registered, SEC Reporting',
+    depositInsurance: 'USD FDIC insured up to $250k; Cold storage insurance',
+    currentOffer: '$20 in Bitcoin upon account verification + zero trading fee week',
+    isEditorPick: true,
+    upvotes: 412,
+    rating: 4.8,
+    reviewCount: 6540,
+    url: 'https://coinbase.com',
+    affiliateUrl: 'https://coinbase.com',
+    dateAdded: '2026-09-12',
+    logo: {
+      type: 'text',
+      text: 'C',
+      bg: '#0052FF',
+      color: '#FFFFFF',
+      border: '#0047E0',
+    },
+    keyPerks: ['5.2% APY on USDC cash balances', 'Publicly audited balance sheet (NASDAQ: COIN)', 'Advanced Trading with TradingView charts', 'Web3 Dapp exploration wallet'],
+    pros: [
+      'Gold standard in regulatory compliance and consumer safety',
+      'US dollar cash held in custodial accounts with FDIC insurance',
+      'Advanced Mode offers competitive maker/taker fee tiers',
+      'Simple automatic recurring buys for dollar-cost averaging'
+    ],
+    cons: [
+      'Basic "Simple Trade" interface includes higher consumer convenience fees',
+      'Coinbase One membership required for complete fee waiver ($29.99/mo)'
+    ],
+    feeBreakdown: [
+      { label: 'Advanced Maker Fee', value: '0.05% - 0.40%', notes: 'Based on 30-day trading volume' },
+      { label: 'Advanced Taker Fee', value: '0.05% - 0.60%', notes: 'Immediate execution' },
+      { label: 'USDC Rewards', value: '5.20% APY', notes: 'Paid out monthly in USDC' },
+      { label: 'ACH Deposits/Withdrawals', value: '$0.00', notes: 'Free standard bank transfers' }
+    ],
+    tags: ['Crypto', 'Bitcoin', 'USDC Yield', 'Publicly Traded', 'Regulated']
+  },
+  {
+    id: 'wealthfront',
+    name: 'Wealthfront',
+    description: 'Automated index investing, daily tax-loss harvesting, and a 5.0% APY cash account.',
+    fullDescription: 'Wealthfront is the leading automated wealth management platform. It designs globally diversified portfolios of low-cost index funds, automatically rebalances your assets, and runs algorithmic tax-loss harvesting to boost after-tax returns. Its Cash Account pays 5.0% APY with up to $8M in FDIC insurance.',
+    category: 'Robo-Advisors',
+    secondaryCategory: 'High-Yield Savings',
+    feeTier: 'Low Fee',
+    feeHighlight: '0.25% AUM / year',
+    yieldAPY: '5.00% APY',
+    minDeposit: '$500 (Inv) / $1 (Cash)',
+    regulatoryStatus: 'SEC Registered Investment Advisor',
+    depositInsurance: 'SIPC up to $500k; FDIC up to $8M on cash sweep',
+    currentOffer: 'Get your first $5,000 managed free + 0.50% APY cash boost',
+    isEditorPick: true,
+    upvotes: 274,
+    rating: 4.9,
+    reviewCount: 3120,
+    url: 'https://wealthfront.com',
+    affiliateUrl: 'https://wealthfront.com',
+    dateAdded: '2026-09-11',
+    logo: {
+      type: 'text',
+      text: 'W',
+      bg: '#5426E7',
+      color: '#FFFFFF',
+      border: '#461BCB',
+    },
+    keyPerks: ['5.0% APY on checking & savings balances', 'Daily automated Tax-Loss Harvesting', 'Direct Indexing for portfolios over $100k', '$8M partner FDIC deposit insurance'],
+    pros: [
+      'Comprehensive financial planning engine with automated projection models',
+      'Free Cash Account with unlimited transfers and same-day payouts',
+      'Automated tax-loss harvesting historically covers the 0.25% fee',
+      'Custom portfolio editing with clean asset allocation controls'
+    ],
+    cons: [
+      'Requires $500 minimum deposit to activate investment accounts',
+      'No live human financial advisors included at the base tier'
+    ],
+    feeBreakdown: [
+      { label: 'Advisory Fee', value: '0.25% / year', notes: 'Deducted monthly on portfolio value' },
+      { label: 'Cash Account', value: '$0.00', notes: 'Zero management or maintenance fee' },
+      { label: 'Average ETF Expense Ratio', value: '0.08%', notes: 'Underlying low-cost Vanguard funds' },
+      { label: 'Wire Transfers Out', value: '$10.00', notes: 'ACH transfers are free' }
+    ],
+    tags: ['Robo-Advisor', 'Passive Investing', 'High APY', 'Tax Loss Harvesting']
+  },
+  {
+    id: 'sofi',
+    name: 'SoFi',
+    description: 'All-in-one financial ecosystem with 4.60% APY savings, zero-fee investing, and member rate discounts.',
+    fullDescription: 'SoFi (Social Finance) combines high-yield checking and savings, commission-free stock and alternative investing, personal loans, and credit cards into a single cohesive app. Setting up direct deposit unlocks up to 4.60% APY on savings with up to $2M in FDIC insurance.',
+    category: 'High-Yield Savings',
+    secondaryCategory: 'Stock Trading',
+    feeTier: 'Zero Fee',
+    feeHighlight: '4.60% APY / $0 fees',
+    yieldAPY: '4.60% APY',
+    minDeposit: '$0',
+    regulatoryStatus: 'OCC Chartered Bank, SEC & FINRA',
+    depositInsurance: 'FDIC insured up to $2M via sweep',
+    currentOffer: 'Up to $300 cash bonus with eligible direct deposit',
+    isEditorPick: true,
+    upvotes: 310,
+    rating: 4.7,
+    reviewCount: 5120,
+    url: 'https://sofi.com',
+    affiliateUrl: 'https://sofi.com',
+    dateAdded: '2026-09-10',
+    logo: {
+      type: 'text',
+      text: 'SoFi',
+      bg: '#00B2A9',
+      color: '#FFFFFF',
+      border: '#009991',
+    },
+    keyPerks: ['4.60% APY on savings with direct deposit', 'Zero account fees, overdraft fees, or minimum balance rules', 'Commission-free stock & fractional share trading', 'Exclusive 0.125% member discount on personal loans'],
+    pros: [
+      'True one-stop financial hub for banking, investing, and borrowing',
+      'Free access to certified financial planners (CFP) for members',
+      'Up to 2-day early paycheck access with automated direct deposit',
+      'Overdraft protection covers up to $50 with zero penalty'
+    ],
+    cons: [
+      'Maximum 4.60% APY requires an active qualifying direct deposit',
+      'Physical cash deposits must be completed via third-party retail partners'
+    ],
+    feeBreakdown: [
+      { label: 'Monthly Maintenance', value: '$0.00', notes: 'No monthly fee' },
+      { label: 'Overdraft Fee', value: '$0.00', notes: 'No overdraft penalties' },
+      { label: 'Stock Trading Commission', value: '$0.00', notes: 'Zero base commission' },
+      { label: 'In-Network Allpoint ATMs', value: '$0.00', notes: '55,000+ free ATMs' }
+    ],
+    tags: ['Banking', 'High APY', 'Zero Fee', 'All-in-One', 'FDIC']
+  },
+  {
+    id: 'wise',
+    name: 'Wise',
+    description: 'Low-cost international money transfers, multi-currency accounts, and transparent mid-market exchange rates.',
+    fullDescription: 'Wise is the global benchmark for international financial mobility. It provides borderless multi-currency bank accounts holding 40+ currencies with real local routing numbers (USD, EUR, GBP, AUD, SGD), international debit cards, and transfers with zero hidden exchange markups.',
+    category: 'E-Wallets & Pay',
+    secondaryCategory: 'Business Banking',
+    feeTier: 'Low Fee',
+    feeHighlight: 'Mid-market rate + 0.35%',
+    yieldAPY: '4.85% APY on USD',
+    minDeposit: '$0',
+    regulatoryStatus: 'FinCEN Registered Money Services Business, FCA (UK)',
+    depositInsurance: 'Partner bank safeguarding / FDIC eligible on USD',
+    currentOffer: 'First international transfer fee-free up to $600',
+    isEditorPick: true,
+    upvotes: 340,
+    rating: 4.9,
+    reviewCount: 7800,
+    url: 'https://wise.com',
+    affiliateUrl: 'https://wise.com',
+    dateAdded: '2026-09-08',
+    logo: {
+      type: 'text',
+      text: 'wise',
+      bg: '#9FE870',
+      color: '#163300',
+      border: '#8BD85D',
+    },
+    keyPerks: ['Hold and convert between 40+ world currencies', 'Real mid-market exchange rate without retail spread markup', 'Local bank account details in 9 major regions', 'Earn up to 4.85% APY on unspent USD balances'],
+    pros: [
+      'Up to 6x cheaper than traditional high-street wire transfers',
+      'Clear, upfront fee calculation before initiating transactions',
+      'Virtual disposable debit cards for online fraud prevention',
+      'Comprehensive API for business payroll and vendor disbursements'
+    ],
+    cons: [
+      'Does not offer lending products or credit lines',
+      'ATM withdrawal fee applies after the first $100/mo allowance'
+    ],
+    feeBreakdown: [
+      { label: 'Account Opening', value: '$0.00', notes: 'Free personal account' },
+      { label: 'Exchange Rate Markup', value: '0.00%', notes: 'Real mid-market rate guaranteed' },
+      { label: 'Transfer Conversion Fee', value: 'From 0.35%', notes: 'Varies transparently by currency pair' },
+      { label: 'Physical Debit Card', value: '$9.00', notes: 'One-time issuance fee' }
+    ],
+    tags: ['Remittance', 'Multi-Currency', 'Global Debit', 'Travel', 'Low Fee']
+  },
+  {
+    id: 'binance',
+    name: 'Binance',
+    description: 'World’s highest volume cryptocurrency exchange with deep order liquidity and lowest 0.1% trading fees.',
+    fullDescription: 'Binance is the global epicenter of digital asset trading. Catering to both retail and institutional traders, it offers thousands of spot and derivatives pairs, automated trading bots, Launchpool token distributions, flexible crypto savings, and an integrated Web3 multi-chain wallet.',
+    category: 'Crypto Exchanges',
+    secondaryCategory: 'DeFi & Staking',
+    feeTier: 'Low Fee',
+    feeHighlight: '0.075% - 0.10% spot fee',
+    yieldAPY: 'Up to 14.5% Earn',
+    minDeposit: '$10',
+    regulatoryStatus: 'Global Jurisdictional Registrations (VASP, MiCA)',
+    depositInsurance: '$1 Billion SAFU User Protection Fund',
+    currentOffer: '$100 trading fee voucher for new verified accounts',
+    isEditorPick: false,
+    upvotes: 490,
+    rating: 4.7,
+    reviewCount: 9200,
+    url: 'https://binance.com',
+    affiliateUrl: 'https://binance.com',
+    dateAdded: '2026-09-07',
+    logo: {
+      type: 'text',
+      text: 'BNB',
+      bg: '#F3BA2F',
+      color: '#000000',
+      border: '#DEAA24',
+    },
+    keyPerks: ['Over 350 cryptocurrencies and 1,000+ trading pairs', '25% trading fee discount when holding BNB', '$1B SAFU fund for emergency insurance', 'Deepest order book liquidity in digital assets'],
+    pros: [
+      'Lowest baseline spot trading fees in the crypto sector',
+      'Extensive suite of automated grid and DCA trading bots',
+      'High-yield flexible staking and launchpool yields',
+      'Advanced API access with high-frequency WebSocket streams'
+    ],
+    cons: [
+      'Not accessible to US residents (who must use Binance.US)',
+      'Complex interface with hundreds of specialized financial modules'
+    ],
+    feeBreakdown: [
+      { label: 'Spot Maker/Taker Base', value: '0.10%', notes: 'Reduces to 0.075% with BNB' },
+      { label: 'USDT Futures Maker', value: '0.020%', notes: 'Volume discounts apply' },
+      { label: 'Crypto Deposits', value: '$0.00', notes: 'Free inbound blockchain transfers' },
+      { label: 'Crypto Withdrawals', value: 'Network dynamic', notes: 'Covers exact miner network fee' }
+    ],
+    tags: ['Crypto', 'High Volume', 'Lowest Fees', 'Derivatives', 'Bots']
+  },
+  {
+    id: 'copilot-money',
+    name: 'Copilot Money',
+    description: 'AI-powered personal finance and net-worth tracker for macOS and iOS with smart transaction intelligence.',
+    fullDescription: 'Copilot Money is an Apple Design Award-winning personal finance copilot. It securely aggregates bank, credit card, investment, and crypto balances, uses on-device machine learning to categorize recurring subscriptions and irregular spending, and tracks net worth in real time.',
+    category: 'Budgeting & Cashflow',
+    secondaryCategory: 'Wealth Management',
+    feeTier: 'Subscription',
+    feeHighlight: '$13 / month',
+    minDeposit: '$0',
+    regulatoryStatus: 'SOC 2 Type II Certified, AES-256 Encryption',
+    depositInsurance: 'Read-only financial data aggregation',
+    currentOffer: '1-month extended free trial with code INVESTIGATE',
+    isEditorPick: true,
+    upvotes: 198,
+    rating: 4.9,
+    reviewCount: 1640,
+    url: 'https://copilot.money',
+    affiliateUrl: 'https://copilot.money',
+    dateAdded: '2026-09-06',
+    logo: {
+      type: 'text',
+      text: 'CP',
+      bg: '#0F172A',
+      color: '#38BDF8',
+      border: '#1E293B',
+    },
+    keyPerks: ['Machine-learning subscription detector', 'Real-time multi-account balance synchronization', 'Clean native iOS and macOS interface', 'Zero advertising and zero data selling'],
+    pros: [
+      'Exceptional user experience with native macOS and iOS widgets',
+      'Smart predictive budgeting that adapts to non-monthly cashflow',
+      'Investment tracking with real-time portfolio performance',
+      'Private by design: your financial telemetry is never monetized'
+    ],
+    cons: [
+      'Requires paid subscription after the trial period ends',
+      'Available exclusively in the Apple ecosystem (no Android/Web app)'
+    ],
+    feeBreakdown: [
+      { label: 'Annual Plan', value: '$95 / year', notes: 'Equivalent to $7.92/month' },
+      { label: 'Monthly Plan', value: '$13 / month', notes: 'Billed monthly, cancel anytime' },
+      { label: 'Ads or Sponsored Offers', value: 'None', notes: '100% independent ad-free model' }
+    ],
+    tags: ['Budgeting', 'Apple Ecosystem', 'Net Worth', 'AI Tracking', 'Ad-Free']
+  },
+  {
+    id: 'monarch-money',
+    name: 'Monarch Money',
+    description: 'Collaborative household budgeting, investment tracking, and custom cashflow analytics.',
+    fullDescription: 'Created by the former product lead of Mint, Monarch Money is built for modern households. It connects with 11,000+ banks via Plaid, MX, and Finicity, allows partners to track shared and personal budgets together, and provides comprehensive investment forecasting.',
+    category: 'Budgeting & Cashflow',
+    secondaryCategory: 'Wealth Management',
+    feeTier: 'Subscription',
+    feeHighlight: '$8.33 / month (Annual)',
+    minDeposit: '$0',
+    regulatoryStatus: 'SOC 2 Compliant, 256-bit Bank Grade Security',
+    depositInsurance: 'Read-only aggregator (zero withdrawal permissions)',
+    currentOffer: '30-day extended trial + 30% off first year',
+    isEditorPick: true,
+    upvotes: 235,
+    rating: 4.8,
+    reviewCount: 2450,
+    url: 'https://monarchmoney.com',
+    affiliateUrl: 'https://monarchmoney.com',
+    dateAdded: '2026-09-05',
+    logo: {
+      type: 'text',
+      text: 'M',
+      bg: '#FF6B00',
+      color: '#FFFFFF',
+      border: '#E65C00',
+    },
+    keyPerks: ['Multi-user household collaboration at no extra fee', 'Triple aggregator redundancy (Plaid, MX, Finicity)', 'Custom rule engine for transaction automation', 'Web, iOS, and Android support'],
+    pros: [
+      'Invite partners or advisors with granular visibility settings',
+      'Reliable bank syncing without frequent credential drops',
+      'Advanced net worth history charts and goal projections',
+      'Ad-free business model respects user confidentiality'
+    ],
+    cons: [
+      'No permanent free tier (subscription required)',
+      'Direct bill pay is not supported within the app'
+    ],
+    feeBreakdown: [
+      { label: 'Annual Subscription', value: '$99.99 / year', notes: '$8.33/month billed annually' },
+      { label: 'Monthly Subscription', value: '$14.99 / month', notes: 'Month-to-month flexibility' },
+      { label: 'Partner Seat', value: '$0.00', notes: 'Included free in primary subscription' }
+    ],
+    tags: ['Household Budgeting', 'Mint Alternative', 'Plaid Sync', 'Cross-Platform']
+  },
+  {
+    id: 'uniswap',
+    name: 'Uniswap',
+    description: 'Leading decentralized automated liquidity protocol on Ethereum, Arbitrum, Optimism, and Base.',
+    fullDescription: 'Uniswap is the world\'s largest decentralized cryptocurrency trading protocol. By operating entirely via immutable smart contracts, Uniswap allows users to swap ERC-20 tokens, stake liquidity for yield, and trade without relying on centralized custody or custodial intermediaries.',
+    category: 'DeFi & Staking',
+    secondaryCategory: 'Crypto Exchanges',
+    feeTier: 'Zero Fee',
+    feeHighlight: '0.05% - 0.30% pool fee',
+    yieldAPY: 'Dynamic LP Yields',
+    minDeposit: '$0',
+    regulatoryStatus: 'Non-Custodial Open Source Smart Contracts',
+    depositInsurance: 'Audited Smart Contracts, 100% Self-Custody',
+    currentOffer: 'Zero protocol fee on select Layer 2 networks',
+    isEditorPick: false,
+    upvotes: 380,
+    rating: 4.8,
+    reviewCount: 5100,
+    url: 'https://uniswap.org',
+    affiliateUrl: 'https://uniswap.org',
+    dateAdded: '2026-09-04',
+    logo: {
+      type: 'text',
+      text: '🦄',
+      bg: '#FF007A',
+      color: '#FFFFFF',
+      border: '#E0006C',
+    },
+    keyPerks: ['Non-custodial: funds never leave your private wallet', 'Permissionless trading of 10,000+ digital assets', 'Earn passive fees by supplying liquidity to pools', 'Gas-efficient execution on Arbitrum and Base'],
+    pros: [
+      'Zero identity verification (KYC) or account creation needed',
+      'Front-running and MEV protection via UniswapX routing',
+      'Deepest liquidity in decentralized finance ecosystem',
+      'Completely open-source code audited by Trail of Bits'
+    ],
+    cons: [
+      'Users are 100% responsible for their private key safety',
+      'Ethereum mainnet transactions incur variable gas fees'
+    ],
+    feeBreakdown: [
+      { label: 'Liquidity Pool Fee', value: '0.05% - 1.0%', notes: 'Distributed directly to liquidity providers' },
+      { label: 'Protocol Interface Fee', value: '0.15% (select tokens)', notes: 'Funds ongoing development' },
+      { label: 'Account Custody Fee', value: '$0.00', notes: 'Purely decentralized and self-hosted' }
+    ],
+    tags: ['DeFi', 'DEX', 'Self Custody', 'Ethereum', 'Passive Yield']
+  },
+  {
+    id: 'fundrise',
+    name: 'Fundrise',
+    description: 'Direct-access private real estate eREITs and tech venture capital funds starting at $10.',
+    fullDescription: 'Fundrise democratizes alternative asset investing. It enables everyday non-accredited investors to build equity in residential apartment portfolios, industrial logistics facilities, private credit, and venture-backed AI technology startups with minimal capital commitments.',
+    category: 'Real Estate Investing',
+    secondaryCategory: 'Wealth Management',
+    feeTier: 'Low Fee',
+    feeHighlight: '0.15% advisory + 0.85% mgmt',
+    yieldAPY: 'Historically 7.4% - 11.2%',
+    minDeposit: '$10',
+    regulatoryStatus: 'SEC Regulated Investment Company',
+    depositInsurance: 'Private equity shares backed by real physical assets',
+    currentOffer: '$10 in bonus shares on your first $100 investment',
+    isEditorPick: true,
+    upvotes: 190,
+    rating: 4.7,
+    reviewCount: 2890,
+    url: 'https://fundrise.com',
+    affiliateUrl: 'https://fundrise.com',
+    dateAdded: '2026-09-03',
+    logo: {
+      type: 'text',
+      text: 'FR',
+      bg: '#1A2E40',
+      color: '#F47920',
+      border: '#142332',
+    },
+    keyPerks: ['Invest in commercial real estate from just $10', 'Quarterly dividend payouts with automatic reinvestment', 'Diversified eREITs insulated from public stock volatility', 'Venture Capital Fund investing in pre-IPO AI startups'],
+    pros: [
+      'Accessible to both accredited and everyday non-accredited investors',
+      'Hands-off automated management by experienced real estate operators',
+      'Stable dividend income combined with long-term property appreciation',
+      'Intuitive dashboard tracking property developments and rental yields'
+    ],
+    cons: [
+      'Real estate investments are illiquid with quarterly redemption limits',
+      'Early withdrawal within first 5 years may incur modest penalty'
+    ],
+    feeBreakdown: [
+      { label: 'Annual Advisory Fee', value: '0.15% / year', notes: 'Account monitoring and tax reporting' },
+      { label: 'Asset Management Fee', value: '0.85% / year', notes: 'Direct property management expenses' },
+      { label: 'Acquisition/Origination Fees', value: '$0.00', notes: 'No broker sales load' }
+    ],
+    tags: ['Real Estate', 'Passive Income', 'Dividends', 'Low Minimum', 'REIT']
+  },
+  {
+    id: 'betterment',
+    name: 'Betterment',
+    description: 'Original automated robo-advisor with goal-based buckets, SRI themes, and tax-smart rebalancing.',
+    fullDescription: 'Betterment pioneered the robo-advisory industry. Designed to maximize long-term retirement and wealth building, it constructs customized ETF portfolios mapped to your specific time horizons, risk profile, and values while executing automated tax-loss harvesting.',
+    category: 'Robo-Advisors',
+    secondaryCategory: 'Retirement & 401(k)',
+    feeTier: 'Low Fee',
+    feeHighlight: '0.25% AUM / year',
+    yieldAPY: '4.75% APY on Cash',
+    minDeposit: '$0',
+    regulatoryStatus: 'SEC Registered Investment Advisor',
+    depositInsurance: 'SIPC up to $500k; FDIC up to $2M on cash reserve',
+    currentOffer: 'Get up to 1 year of free portfolio management',
+    isEditorPick: false,
+    upvotes: 220,
+    rating: 4.8,
+    reviewCount: 3410,
+    url: 'https://betterment.com',
+    affiliateUrl: 'https://betterment.com',
+    dateAdded: '2026-09-02',
+    logo: {
+      type: 'text',
+      text: 'B',
+      bg: '#0055FF',
+      color: '#FFFFFF',
+      border: '#0047D6',
+    },
+    keyPerks: ['Automated goal-based asset allocation', 'Socially Responsible (SRI) and Climate Impact portfolios', 'Betterment Cash Reserve paying 4.75% APY', 'Access to human CFP advisors on Premium tier (0.40%)'],
+    pros: [
+      'Zero minimum deposit required to open an account',
+      'Fractional shares ensure every cent is immediately invested',
+      'Comprehensive tax coordination across taxable and IRA accounts',
+      'Seamless rollover support for old employer 401(k) plans'
+    ],
+    cons: [
+      'Accounts under $20,000 without $250/mo recurring deposit pay $4/mo',
+      'Cannot buy individual stocks or self-direct equity picks'
+    ],
+    feeBreakdown: [
+      { label: 'Standard Digital Fee', value: '0.25% / year', notes: 'Or $4/mo without recurring deposits' },
+      { label: 'Premium CFP Advisor', value: '0.40% / year', notes: 'Requires $100k minimum asset balance' },
+      { label: 'Cash Reserve Account', value: '$0.00', notes: 'No advisory or management fees' }
+    ],
+    tags: ['Robo-Advisor', 'IRA Rollover', 'Tax Harvesting', 'Retirement']
+  },
+  {
+    id: 'upstart',
+    name: 'Upstart',
+    description: 'AI-powered consumer lending platform evaluating 1,600+ variables beyond traditional FICO scores.',
+    fullDescription: 'Upstart uses artificial intelligence and machine learning to make consumer lending fairer and faster. By looking beyond simple credit scores to evaluate education, employment history, and financial trajectory, Upstart offers lower rates and delivers instant loan approval to 84% of applicants.',
+    category: 'Consumer Lending',
+    secondaryCategory: 'Credit Cards',
+    feeTier: 'Low Fee',
+    feeHighlight: 'Rates from 6.40% APR',
+    minDeposit: '$1,000 min loan',
+    regulatoryStatus: 'Partner Bank Originators (Cross River, FinWise)',
+    depositInsurance: 'Direct loan disbursement to bank account',
+    currentOffer: 'Check rate with zero impact to credit score',
+    isEditorPick: true,
+    upvotes: 165,
+    rating: 4.7,
+    reviewCount: 2190,
+    url: 'https://upstart.com',
+    affiliateUrl: 'https://upstart.com',
+    dateAdded: '2026-09-01',
+    logo: {
+      type: 'text',
+      text: 'UP',
+      bg: '#00B1A0',
+      color: '#FFFFFF',
+      border: '#009789',
+    },
+    keyPerks: ['Loan amounts from $1,000 up to $50,000', 'Soft credit check that does not hurt credit score', '84% of loans approved instantly with next-day funding', 'Fixed competitive interest rates with zero prepayment penalties'],
+    pros: [
+      'Considers degrees, job history, and GPA to lower APR for borrowers',
+      'Fast next-business-day ACH direct cash disbursement',
+      'No prepayment penalties for paying loan off early',
+      'Clear transparent fixed monthly payment schedule'
+    ],
+    cons: [
+      'Origination fee between 0% to 12% deducted from disbursed loan',
+      'Late fee of 5% or $15 assessed if payment is missed'
+    ],
+    feeBreakdown: [
+      { label: 'Fixed APR Range', value: '6.40% - 35.99%', notes: 'Based on creditworthiness and AI scoring' },
+      { label: 'Origination Fee', value: '0% - 12%', notes: 'Deducted automatically from loan payout' },
+      { label: 'Prepayment Penalty', value: '$0.00', notes: 'Pay off early anytime without fee' }
+    ],
+    tags: ['Personal Loans', 'AI Underwriting', 'Debt Consolidation', 'Fast Funding']
+  },
+  {
+    id: 'mercury',
+    name: 'Mercury',
+    description: 'Modern financial platform and FDIC-insured treasury banking engineered for startups.',
+    fullDescription: 'Mercury builds banking infrastructure for technology startups and venture-backed founders. Offering multi-account structures, automated vendor payments, high-yield treasury management paying up to 5.15% yield, and corporate credit cards, Mercury simplifies startup finance.',
+    category: 'Business Banking',
+    secondaryCategory: 'High-Yield Savings',
+    feeTier: 'Zero Fee',
+    feeHighlight: 'Up to 5.15% Treasury Yield',
+    minDeposit: '$0',
+    regulatoryStatus: 'Partner Banks (Choice Financial & Evolve Bank, FDIC)',
+    depositInsurance: 'Up to $5 Million partner FDIC insurance',
+    currentOffer: 'Free wire transfers + $250 startup bonus on $10k deposit',
+    isEditorPick: true,
+    upvotes: 215,
+    rating: 4.9,
+    reviewCount: 1850,
+    url: 'https://mercury.com',
+    affiliateUrl: 'https://mercury.com',
+    dateAdded: '2026-08-30',
+    logo: {
+      type: 'text',
+      text: 'Hg',
+      bg: '#000000',
+      color: '#FFFFFF',
+      border: '#2A2A2A',
+    },
+    keyPerks: ['Up to $5M in FDIC insurance coverage via sweep network', 'Mercury Treasury investing in low-risk US Gov Treasury bills', 'Free domestic and international USD wire transfers', 'Custom API access for accounting and automatic billing'],
+    pros: [
+      'Zero monthly account maintenance or balance requirements',
+      'Intuitive multi-user role permissions for finance teams',
+      'Direct synchronization with QuickBooks, Xero, and Brex',
+      'Fast online onboarding without physical branch visits'
+    ],
+    cons: [
+      'Exclusively available to registered corporate entities (LLCs & C-Corps)',
+      'Cash deposits not supported (built for digital businesses)'
+    ],
+    feeBreakdown: [
+      { label: 'Monthly Maintenance', value: '$0.00', notes: 'No monthly fees' },
+      { label: 'Domestic & USD Wire Transfers', value: '$0.00', notes: 'Completely free wires' },
+      { label: 'Mercury Treasury Management', value: '0.15% - 0.25%', notes: 'Yields net up to 5.15% APY' }
+    ],
+    tags: ['Startup Banking', 'Business Accounts', 'FDIC $5M', 'Treasury', 'Zero Fee']
+  },
+  {
+    id: 'tradingview',
+    name: 'TradingView',
+    description: 'Industry-standard charting platform, global technical screeners, and collaborative Pine Script community.',
+    fullDescription: 'TradingView is the premier market analysis workstation used by over 50 million traders worldwide. Featuring ultra-fast HTML5 charts, hundreds of technical indicators, financial screeners, and paper trading, it provides deep market intelligence across stocks, crypto, forex, and commodities.',
+    category: 'Market Analysis',
+    secondaryCategory: 'Stock Trading',
+    feeTier: 'Freemium',
+    feeHighlight: 'Free / Pro from $14.95',
+    minDeposit: '$0',
+    regulatoryStatus: 'Market Data Aggregator (Direct Exchange Feeds)',
+    depositInsurance: 'Analytical Software / Non-Custodial',
+    currentOffer: '30-day free trial on Essential, Plus, and Premium plans',
+    isEditorPick: true,
+    upvotes: 440,
+    rating: 4.9,
+    reviewCount: 11200,
+    url: 'https://tradingview.com',
+    affiliateUrl: 'https://tradingview.com',
+    dateAdded: '2026-08-28',
+    logo: {
+      type: 'text',
+      text: 'TV',
+      bg: '#131722',
+      color: '#2962FF',
+      border: '#1E222D',
+    },
+    keyPerks: ['Over 100,000 public indicators and automated Pine scripts', 'Real-time multi-asset screeners and heatmaps', 'Direct broker integration for executing trades from the chart', 'Cloud synchronization across browser, desktop, and mobile'],
+    pros: [
+      'Smoothest and most responsive charting engine in finance',
+      'Extensive social community sharing trade ideas and analysis',
+      'Paper trading simulator allows risk-free strategy validation',
+      'Covers virtually every global stock exchange and crypto pair'
+    ],
+    cons: [
+      'Free tier displays occasional promotional banner advertisements',
+      'Real-time data feeds for certain regional exchanges require small monthly exchange fee'
+    ],
+    feeBreakdown: [
+      { label: 'Basic Plan', value: '$0.00', notes: 'Full access with 3 indicators/chart' },
+      { label: 'Essential Plan', value: '$14.95 / mo', notes: '5 indicators, 2 charts/window, ad-free' },
+      { label: 'Plus Plan', value: '$29.95 / mo', notes: '10 indicators, 4 charts/layout' },
+      { label: 'Premium Plan', value: '$59.95 / mo', notes: '25 indicators, 8 charts, second-interval alerts' }
+    ],
+    tags: ['Technical Analysis', 'Charting', 'Stock Screener', 'Pine Script', 'Crypto']
+  },
+  {
+    id: 'chime',
+    name: 'Chime',
+    description: 'Fee-free mobile banking with SpotMe overdraft up to $200 and early payday direct deposit.',
+    fullDescription: 'Chime is a financial technology company dedicated to making basic banking services helpful and transparent. Partnering with Stride Bank and The Bancorp Bank, Chime provides fee-free overdraft protection, automatic savings round-ups, and building credit with the Chime Credit Builder Visa.',
+    category: 'High-Yield Savings',
+    secondaryCategory: 'Credit Cards',
+    feeTier: 'Zero Fee',
+    feeHighlight: '$0 monthly / $0 overdraft',
+    yieldAPY: '2.00% APY Savings',
+    minDeposit: '$0',
+    regulatoryStatus: 'Partner FDIC Banks (Stride Bank, The Bancorp)',
+    depositInsurance: 'FDIC insured up to $250,000',
+    currentOffer: '$100 referral bonus on first $200 direct deposit',
+    isEditorPick: false,
+    upvotes: 295,
+    rating: 4.6,
+    reviewCount: 6800,
+    url: 'https://chime.com',
+    affiliateUrl: 'https://chime.com',
+    dateAdded: '2026-08-25',
+    logo: {
+      type: 'text',
+      text: 'CH',
+      bg: '#25C974',
+      color: '#FFFFFF',
+      border: '#1EAD62',
+    },
+    keyPerks: ['SpotMe fee-free overdraft up to $200', 'Get paid up to 2 days early with direct deposit', 'Credit Builder card helps build credit history without interest', '60,000+ fee-free ATMs nationwide'],
+    pros: [
+      'No monthly maintenance fees, no minimum balance requirements',
+      'Safe Credit Builder card prevents overspending by using your deposit',
+      'Automated Save When You Spend round-up transfers',
+      'Instant peer-to-peer transfers with Pay Anyone'
+    ],
+    cons: [
+      'Savings APY of 2.00% is lower than dedicated 4-5% high-yield accounts',
+      'Cash deposits at retail locations may incur third-party retailer fees'
+    ],
+    feeBreakdown: [
+      { label: 'Monthly Account Fee', value: '$0.00', notes: 'Zero monthly fees' },
+      { label: 'Overdraft Fee', value: '$0.00', notes: 'SpotMe covers up to $200 without fee' },
+      { label: 'Out-of-Network ATM', value: '$2.50', notes: 'Free at 60,000+ Moneypass ATMs' }
+    ],
+    tags: ['Mobile Banking', 'Zero Overdraft', 'Credit Builder', 'Early Payday']
+  },
+  {
+    id: 'turbotax-ai',
+    name: 'TurboTax AI',
+    description: 'Algorithmic income tax filing with automated deduction discovery, W-2 scanning, and CPA guarantee.',
+    fullDescription: 'TurboTax by Intuit incorporates cutting-edge machine learning and AI to maximize personal and small business tax refunds. By scanning documents, automatically classifying crypto and brokerage transactions, and checking 400+ deductions, TurboTax ensures 100% mathematical accuracy.',
+    category: 'Tax & Accounting',
+    secondaryCategory: 'Budgeting & Cashflow',
+    feeTier: 'Freemium',
+    feeHighlight: 'Free Edition / Deluxe $59',
+    minDeposit: '$0',
+    regulatoryStatus: 'IRS Authorized e-File Provider',
+    depositInsurance: '100% Accuracy & Maximum Refund Guarantee',
+    currentOffer: 'Simple returns file 100% free + audit defense add-on',
+    isEditorPick: false,
+    upvotes: 180,
+    rating: 4.7,
+    reviewCount: 8400,
+    url: 'https://turbotax.com',
+    affiliateUrl: 'https://turbotax.com',
+    dateAdded: '2026-08-20',
+    logo: {
+      type: 'text',
+      text: 'TT',
+      bg: '#E21A2C',
+      color: '#FFFFFF',
+      border: '#C01323',
+    },
+    keyPerks: ['Automated import from 1,000+ brokers and crypto exchanges', 'AI deduction finder scanning 400+ eligible tax deductions', 'Live full service CPA assistance available on demand', 'Guaranteed maximum tax refund and audit representation'],
+    pros: [
+      'Simple W-2 smartphone photo upload and auto-fill',
+      'Detects complex investment capital gains and wash sales',
+      'Step-by-step interview format tailored to life events',
+      'State return preparation bundled with federal filing'
+    ],
+    cons: [
+      'Self-employed and business returns require pricier Premier/Live tiers',
+      'Frequent upselling prompts for optional audit support products'
+    ],
+    feeBreakdown: [
+      { label: 'Free Edition', value: '$0.00', notes: 'Form 1040 only (simple returns)' },
+      { label: 'Deluxe Plan', value: '$59 - $89', notes: 'Maximizes mortgage and charity deductions' },
+      { label: 'Premier Plan', value: '$89 - $129', notes: 'Stock, crypto, and rental property sales' }
+    ],
+    tags: ['Taxes', 'IRS e-File', 'Refund Maximizer', 'Crypto Taxes']
+  },
+  {
+    id: 'empower',
+    name: 'Empower (Personal Capital)',
+    description: 'Free comprehensive portfolio dashboard, retirement planner, and investment fee transparency analyzer.',
+    fullDescription: 'Empower (formerly Personal Capital) combines powerful free wealth-tracking software with optional fiduciary wealth advisory services. It syncs investment accounts, 401(k)s, mortgages, and bank balances to reveal hidden fund fees, asset allocation drift, and retirement readiness.',
+    category: 'Wealth Management',
+    secondaryCategory: 'Budgeting & Cashflow',
+    feeTier: 'Freemium',
+    feeHighlight: 'Free Software / 0.89% Adv',
+    yieldAPY: '4.70% APY Cash',
+    minDeposit: '$0 (Dashboard) / $100k (Adv)',
+    regulatoryStatus: 'SEC Registered Investment Advisor (Fiduciary)',
+    depositInsurance: 'SIPC up to $500k; FDIC up to $5M on cash',
+    currentOffer: 'Free portfolio audit and retirement readiness assessment',
+    isEditorPick: true,
+    upvotes: 260,
+    rating: 4.8,
+    reviewCount: 3950,
+    url: 'https://empower.com',
+    affiliateUrl: 'https://empower.com',
+    dateAdded: '2026-08-15',
+    logo: {
+      type: 'text',
+      text: 'EM',
+      bg: '#D9381E',
+      color: '#FFFFFF',
+      border: '#BA2E17',
+    },
+    keyPerks: ['Investment Checkup tool highlighting hidden 401(k) fees', 'Retirement planner with Monte Carlo probability simulations', 'Empower Personal Cash paying 4.70% APY with $5M FDIC protection', '100% free software forever without credit card required'],
+    pros: [
+      'Best-in-class retirement trajectory modeling with life scenario tweaks',
+      'Fee Analyzer uncovers expensive mutual fund expense ratios',
+      'Holistic net-worth tracking across real estate (Zillow integration) and debts',
+      'Fiduciary standard ensures financial advice is strictly in client interest'
+    ],
+    cons: [
+      'High-net-worth users may receive occasional calls offering advisory services',
+      'Budgeting tools are less granular than dedicated tools like YNAB'
+    ],
+    feeBreakdown: [
+      { label: 'Financial Tracking Tools', value: '$0.00', notes: '100% free indefinitely' },
+      { label: 'Cash Account', value: '$0.00', notes: 'Zero management or transfer fees' },
+      { label: 'Wealth Advisory (First $1M)', value: '0.89% / year', notes: 'Includes dedicated CFP team' }
+    ],
+    tags: ['Net Worth', 'Retirement Planner', 'Fee Analyzer', 'Wealth', 'Free Tools']
+  },
+  {
+    id: 'fidelity',
+    name: 'Fidelity Investments',
+    description: 'Full-service financial brokerage with zero expense ratio index funds, fractional shares, and 4.95% cash sweep.',
+    fullDescription: 'Fidelity Investments is a trusted pillar of personal wealth management managing trillions in client assets. It offers zero account fees, zero-commission equity trading, groundbreaking ZERO-fee index mutual funds (0.00% expense ratio), and automated government money market cash sweep (SPAXX) paying ~4.95%.',
+    category: 'Stock Trading',
+    secondaryCategory: 'Retirement & 401(k)',
+    feeTier: 'Commission Free',
+    feeHighlight: '$0 / trade + 0% Index Funds',
+    yieldAPY: '4.95% APY (SPAXX)',
+    minDeposit: '$0',
+    regulatoryStatus: 'SEC, FINRA, SIPC Registered Broker-Dealer',
+    depositInsurance: 'SIPC up to $500k; Excess SIPC coverage up to $1B',
+    currentOffer: '$100 cash bonus when opening an eligible account with $50 deposit',
+    isEditorPick: true,
+    upvotes: 370,
+    rating: 4.9,
+    reviewCount: 8900,
+    url: 'https://fidelity.com',
+    affiliateUrl: 'https://fidelity.com',
+    dateAdded: '2026-08-10',
+    logo: {
+      type: 'text',
+      text: 'FID',
+      bg: '#128038',
+      color: '#FFFFFF',
+      border: '#0E662C',
+    },
+    keyPerks: ['Automated 4.95% SPAXX core cash sweep on uninvested balances', 'Industry-exclusive Fidelity ZERO index funds with 0.00% expense ratios', 'Dollar-based fractional share trading on 7,000+ US stocks', 'Full-service 24/7 phone, chat, and branch office support'],
+    pros: [
+      'Unmatched client trust and institutional financial stability',
+      'Uninvested cash automatically earns top money market yield without locking',
+      'Fidelity Visa Signature card earns 2% cash back on all purchases into accounts',
+      'Outstanding research from Morningstar, Reuters, and Zacks included free'
+    ],
+    cons: [
+      'Active Trader Pro desktop software feels classic compared to modern apps',
+      'Crypto asset trading currently supports only Bitcoin and Ethereum'
+    ],
+    feeBreakdown: [
+      { label: 'US Equities & ETFs', value: '$0.00', notes: 'Zero commission' },
+      { label: 'Options Contracts', value: '$0.65 / contract', notes: 'No base ticket charge' },
+      { label: 'Fidelity ZERO Index Funds', value: '0.00% expense ratio', notes: 'FZROX, FNILX, FZILX' },
+      { label: 'Account Maintenance / Wire In', value: '$0.00', notes: 'Zero maintenance fees' }
+    ],
+    tags: ['Brokerage', 'Zero Commission', 'Cash Sweep', 'Index Funds', 'Retirement']
+  }
+];
