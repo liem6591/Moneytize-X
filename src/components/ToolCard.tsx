@@ -1,6 +1,6 @@
 import React from 'react';
 import { FinancialPlatform } from '../types';
-import { ChevronUp, ExternalLink, ShieldCheck, Sparkles, Scale, Check, Star } from 'lucide-react';
+import { ChevronUp, ShieldCheck, Sparkles, Scale, Check, Star } from 'lucide-react';
 
 interface ToolCardProps {
   platform: FinancialPlatform;
@@ -76,6 +76,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                 </span>
               )}
             </div>
+
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
               {platform.description}
             </p>

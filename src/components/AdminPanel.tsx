@@ -31,6 +31,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  Globe,
+  Loader2,
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -283,9 +285,111 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [consText, setConsText] = useState('');
   const [tagsText, setTagsText] = useState('');
 
+  // Auto-fill from website URL states
+  const [autofillUrl, setAutofillUrl] = useState('');
+  const [isAutofilling, setIsAutofilling] = useState(false);
+  const [autofillError, setAutofillError] = useState<string | null>(null);
+  const [autofillSuccess, setAutofillSuccess] = useState(false);
+
+  // Auto-fill handler
+  const handleAutofillFromUrl = async (customUrl?: string) => {
+    let rawTarget = (customUrl !== undefined ? customUrl : (autofillUrl || formData.url || '')).trim();
+
+    if (!rawTarget || rawTarget === 'https://' || rawTarget === 'http://') {
+      setAutofillError('Vui lòng nhập link website để tự động điền (ví dụ: https://robinhood.com hoặc robinhood.com)');
+      return;
+    }
+
+    // Auto-prepend https:// if protocol is omitted
+    if (!/^https?:\/\//i.test(rawTarget)) {
+      rawTarget = `https://${rawTarget}`;
+    }
+
+    setIsAutofilling(true);
+    setAutofillError(null);
+    setAutofillSuccess(false);
+
+    try {
+      const res = await fetch('/api/gemini/autofill-platform', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: rawTarget,
+          existingCategories: activeCategories,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server returned status ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      // Resolve category: match existing or add new
+      let resolvedCategory = prev => prev.category;
+      if (data.category) {
+        const matched = activeCategories.find(
+          (c) => c.toLowerCase() === data.category.toLowerCase()
+        );
+        if (matched) {
+          resolvedCategory = () => matched;
+        } else {
+          resolvedCategory = () => data.category;
+          if (onAddCategory) {
+            onAddCategory(data.category);
+          }
+        }
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        name: data.name || prev.name,
+        category: resolvedCategory(prev),
+        secondaryCategory: data.secondaryCategory || prev.secondaryCategory,
+        url: data.url || rawTarget,
+        feeTier: data.feeTier || prev.feeTier,
+        feeHighlight: data.feeHighlight || prev.feeHighlight,
+        yieldAPY: data.yieldAPY || '',
+        minDeposit: data.minDeposit || prev.minDeposit || '$0',
+        regulatoryStatus: data.regulatoryStatus || prev.regulatoryStatus,
+        depositInsurance: data.depositInsurance || prev.depositInsurance,
+        description: data.description || prev.description,
+        fullDescription: data.fullDescription || prev.fullDescription,
+        currentOffer: data.currentOffer || prev.currentOffer || '',
+        logo: data.logo || prev.logo,
+      }));
+
+      if (Array.isArray(data.pros) && data.pros.length > 0) {
+        setProsText(data.pros.join('\n'));
+      }
+      if (Array.isArray(data.cons) && data.cons.length > 0) {
+        setConsText(data.cons.join('\n'));
+      }
+      if (Array.isArray(data.keyPerks) && data.keyPerks.length > 0) {
+        setKeyPerksText(data.keyPerks.join('\n'));
+      }
+      if (Array.isArray(data.tags) && data.tags.length > 0) {
+        setTagsText(data.tags.join(', '));
+      }
+
+      setAutofillUrl(data.url || rawTarget);
+      setAutofillSuccess(true);
+      showToast(`✓ Đã tự động điền thông tin cho ${data.name || 'nền tảng'}!`);
+      setTimeout(() => setAutofillSuccess(false), 6000);
+    } catch (err: unknown) {
+      console.error('Autofill error:', err);
+      setAutofillError('Không thể tự động điền thông tin từ link này. Vui lòng kiểm tra lại URL.');
+    } finally {
+      setIsAutofilling(false);
+    }
+  };
+
   // Open Add modal
   const handleOpenAdd = () => {
     setEditingPlatform(null);
+    setAutofillUrl('');
+    setAutofillError(null);
+    setAutofillSuccess(false);
     setFormData({
       name: '',
       category: 'Stock Trading',
@@ -325,7 +429,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   // Open Edit modal
   const handleOpenEdit = (p: FinancialPlatform) => {
     setEditingPlatform(p);
-    setFormData({ ...p });
+    setFormData({
+      ...p,
+      url: p.url || p.affiliateUrl || '',
+    });
     setKeyPerksText((p.keyPerks || []).join('\n'));
     setProsText((p.pros || []).join('\n'));
     setConsText((p.cons || []).join('\n'));
@@ -361,6 +468,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     const logoText =
       formData.logo?.text || formData.name.substring(0, 2).toUpperCase();
 
+    // Normalize URL
+    let cleanUrl = (formData.url || '').trim();
+    if (cleanUrl && !/^https?:\/\//i.test(cleanUrl)) {
+      cleanUrl = `https://${cleanUrl}`;
+    }
+
     const preparedPlatform: FinancialPlatform = {
       id: editingPlatform ? editingPlatform.id : `custom-${Date.now()}`,
       name: formData.name.trim(),
@@ -380,8 +493,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       upvotes: editingPlatform ? editingPlatform.upvotes : 1,
       rating: Number(formData.rating) || 4.8,
       reviewCount: Number(formData.reviewCount) || 1,
-      url: formData.url?.trim() || 'https://',
-      affiliateUrl: formData.affiliateUrl?.trim() || formData.url?.trim() || 'https://',
+      url: cleanUrl || 'https://',
+      affiliateUrl: cleanUrl || 'https://',
       dateAdded: editingPlatform
         ? editingPlatform.dateAdded
         : new Date().toISOString().split('T')[0],
@@ -402,10 +515,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
     if (editingPlatform) {
       onUpdatePlatform(preparedPlatform);
-      showToast(`Platform "${preparedPlatform.name}" updated successfully!`);
+      showToast(`Đã cập nhật nền tảng "${preparedPlatform.name}"! Link truy cập: ${preparedPlatform.url}`);
     } else {
       onAddPlatform(preparedPlatform);
-      showToast(`Platform "${preparedPlatform.name}" created successfully!`);
+      showToast(`Đã thêm nền tảng "${preparedPlatform.name}" thành công!`);
     }
 
     setIsFormOpen(false);
@@ -874,7 +987,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                             {p.logo.text || p.name.substring(0, 2)}
                           </div>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="font-bold text-slate-900 dark:text-white text-sm truncate">
                                 {p.name}
                               </span>
@@ -883,8 +996,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                   href={p.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-slate-400 hover:text-emerald-600 transition-colors"
-                                  title="Visit official website"
+                                  className="text-slate-400 hover:text-emerald-600 transition-colors inline-flex items-center"
+                                  title={`Website URL: ${p.url}`}
                                 >
                                   <ExternalLink className="w-3 h-3" />
                                 </a>
@@ -1093,6 +1206,107 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             {/* Form Body */}
             <form onSubmit={handleFormSubmit} className="p-6 space-y-6 max-h-[78vh] overflow-y-auto">
+              {/* Quick Auto-Fill Banner with Website Link */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border border-emerald-500/30">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                      <span>Tự động điền thông tin từ Link Website</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 font-bold uppercase">
+                        AI Smart Fill
+                      </span>
+                    </h5>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Nhập link trang web (ví dụ: robinhood.com, coinbase.com, revolut.com, sofi.com...) và nhấn nút <span className="font-semibold text-emerald-600 dark:text-emerald-400">Tự động điền</span> để điền tự động toàn bộ hồ sơ nền tảng.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-3">
+                  <div className="relative flex-1">
+                    <Globe className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={autofillUrl}
+                      onChange={(e) => {
+                        setAutofillUrl(e.target.value);
+                        setFormData((prev) => ({ ...prev, url: e.target.value }));
+                        setAutofillError(null);
+                      }}
+                      placeholder="https://robinhood.com, https://revolut.com, coinbase.com..."
+                      className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-hidden focus:ring-2 focus:ring-emerald-500/30"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAutofillFromUrl(autofillUrl);
+                        }
+                      }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleAutofillFromUrl(autofillUrl)}
+                    disabled={isAutofilling}
+                    className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white flex items-center justify-center gap-1.5 cursor-pointer shadow-xs shrink-0 transition-all active:scale-98"
+                  >
+                    {isAutofilling ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Đang điền...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Tự động điền</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Quick suggestions pills */}
+                <div className="flex items-center flex-wrap gap-1.5 mt-2.5 pt-2 border-t border-emerald-500/20 text-[11px]">
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Thử nhanh:</span>
+                  {[
+                    { name: 'Robinhood', url: 'https://robinhood.com' },
+                    { name: 'Coinbase', url: 'https://coinbase.com' },
+                    { name: 'Revolut', url: 'https://revolut.com' },
+                    { name: 'Interactive Brokers', url: 'https://interactivebrokers.com' },
+                    { name: 'Wise', url: 'https://wise.com' },
+                    { name: 'SoFi', url: 'https://sofi.com' },
+                  ].map((chip) => (
+                    <button
+                      key={chip.name}
+                      type="button"
+                      onClick={() => {
+                        setAutofillUrl(chip.url);
+                        setFormData((prev) => ({ ...prev, url: chip.url }));
+                        handleAutofillFromUrl(chip.url);
+                      }}
+                      className="px-2 py-0.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 transition-colors text-[10px] font-semibold cursor-pointer"
+                    >
+                      {chip.name}
+                    </button>
+                  ))}
+                </div>
+
+                {autofillError && (
+                  <p className="text-[11px] text-rose-500 font-medium mt-2 flex items-center gap-1.5 animate-in fade-in">
+                    <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{autofillError}</span>
+                  </p>
+                )}
+
+                {autofillSuccess && (
+                  <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium mt-2 flex items-center gap-1.5 animate-in fade-in">
+                    <Check className="w-3.5 h-3.5 shrink-0 stroke-[3]" />
+                    <span>Đã tự động điền thành công tất cả thông tin nền tảng! Bạn có thể xem lại hoặc chỉnh sửa trước khi lưu.</span>
+                  </p>
+                )}
+              </div>
+
               {/* Section 1: Basic Identity */}
               <div className="space-y-4">
                 <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
@@ -1192,18 +1406,61 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                      Official Website URL *
-                    </label>
-                    <input
-                      type="url"
-                      required
-                      value={formData.url}
-                      onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                      placeholder="https://example.com"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-hidden"
-                    />
+                  <div className="sm:col-span-2">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <span>Link Website Nền Tảng (Website / Affiliate URL) *</span>
+                      </label>
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline">
+                        Nhập link web và bấm nút để tự động điền toàn bộ thông tin
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="relative flex-1">
+                        <Globe className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <input
+                          type="text"
+                          required
+                          value={formData.url || ''}
+                          onChange={(e) => {
+                            setFormData({ ...formData, url: e.target.value });
+                            setAutofillUrl(e.target.value);
+                            setAutofillError(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAutofillFromUrl(formData.url);
+                            }
+                          }}
+                          placeholder="https://... (nhập link website hoặc link affiliate của nền tảng)"
+                          className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-hidden"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleAutofillFromUrl(formData.url)}
+                        disabled={isAutofilling || !formData.url || formData.url.trim() === 'https://' || formData.url.trim() === 'http://'}
+                        className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0 transition-all active:scale-98"
+                        title="Tự động điền toàn bộ hồ sơ từ link này"
+                      >
+                        {isAutofilling ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Đang điền...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                            <span>Tự động điền thông tin</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                      Link ở ô này sẽ được đồng bộ trực tiếp ra nút "Visit [Nền tảng]" trên giao diện người dùng.
+                    </p>
                   </div>
                 </div>
               </div>

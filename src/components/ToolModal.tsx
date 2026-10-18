@@ -608,13 +608,14 @@ export const ToolModal: React.FC<ToolModalProps> = ({
             <span>{copied ? 'Copied' : 'Share'}</span>
           </button>
 
+          {/* User visit link: Synchronized directly from admin URL */}
           <a
-            href={platform.affiliateUrl || platform.url}
+            href={platform.url || platform.affiliateUrl || '#'}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 sm:flex-initial bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-6 py-2.5 rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span>Open {platform.name} & Claim Offer</span>
+            <span>Visit {platform.name}</span>
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>

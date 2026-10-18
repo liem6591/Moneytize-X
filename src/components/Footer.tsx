@@ -9,7 +9,7 @@ interface FooterProps {
   onToggleDarkMode?: () => void;
   onSelectCategory: (category: string) => void;
   onOpenSubscribe: () => void;
-  onOpenSubmitPlatform: () => void;
+  onOpenSubmitPlatform?: () => void;
   onNavigateAdmin?: () => void;
   onOpenAdminLogin?: () => void;
 }
@@ -69,14 +69,6 @@ export const Footer: React.FC<FooterProps> = ({
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
               Moneytize X audits and compares the world's leading stock brokers, high-yield cash accounts, crypto exchanges, and lending apps with transparent fee disclosures.
             </p>
-            <div className="pt-1">
-              <button
-                onClick={onOpenSubmitPlatform}
-                className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer"
-              >
-                + Submit a platform to the database
-              </button>
-            </div>
           </div>
 
           {/* Col 2: Popular Categories */}

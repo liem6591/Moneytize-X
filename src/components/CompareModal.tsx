@@ -286,14 +286,14 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                         </button>
                       </div>
 
-                      {/* Primary Action Button */}
+                      {/* Primary Action Button - Synchronized directly from admin URL */}
                       <a
-                        href={p.affiliateUrl || p.url}
+                        href={p.url || p.affiliateUrl || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full mt-2 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                       >
-                        <span>Visit & Open Account</span>
+                        <span>Visit {p.name}</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
 

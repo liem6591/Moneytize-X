@@ -520,6 +520,9 @@ export default function App() {
     if (selectedPlatform?.id === updatedPlatform.id) {
       setSelectedPlatform(updatedPlatform);
     }
+    if (reviewModalPlatform?.id === updatedPlatform.id) {
+      setReviewModalPlatform(updatedPlatform);
+    }
   };
 
   const handleAdminDeletePlatform = (platformId: string) => {
